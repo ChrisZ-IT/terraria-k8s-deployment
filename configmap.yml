@@ -88,28 +88,3 @@ data:
     unzip _DOLLAR_{HOME}/temp/terraria_server.zip -d _DOLLAR_{HOME}/temp && \
     cp -r _DOLLAR_{HOME}/temp/*/Linux/* _DOLLAR_{HOME}/terraria-server
     chmod 755 _DOLLAR_{HOME}/terraria-server/TerrariaServer.bin.x86*
-
-  # tshock_download.sh: |
-  #   #!/usr/bin/env bash
-
-  #   # Downloads the latest TShock Terraria server files from github
-  #   results=_DOLLAR_(curl -L "https://api.github.com/repos/Pryaxis/TShock/releases/latest")
-  #   tag=(_DOLLAR_(echo _DOLLAR_results | jq '.tag_name'))
-  #   version=_DOLLAR_(echo "_DOLLAR_tag" | grep -oP '[0-9]+\.[0-9]+\.[0-9]+')
-  #   arch=_DOLLAR_(uname -m)
-  #   if [[ "_DOLLAR_arch" == "x86_64" ]]; then
-  #     arch="x64"
-  #   elif [[ "_DOLLAR_arch" == "aarch64" ]]; then
-  #     arch="arm64"
-  #   else
-  #     arch="arm"
-  #   fi
-  #   download_url=(_DOLLAR_(echo _DOLLAR_results | jq '.assets[].browser_download_url' | grep _DOLLAR_arch | tr -d '"' ))
-  #   mkdir _DOLLAR_{HOME}/temp && \
-  #   curl -Lo _DOLLAR_{HOME}/temp/tshock_server.zip _DOLLAR_download_url
-
-  #   # extracts server files
-  #   mkdir _DOLLAR_{HOME}/tshock-server && \
-  #   unzip _DOLLAR_{HOME}/temp/tshock_server.zip -d _DOLLAR_{HOME}/temp && \
-  #   tar -xvf _DOLLAR_{HOME}/temp/*.tar -C _DOLLAR_{HOME}/tshock-server && \
-  #   rm -rf _DOLLAR_{HOME}/temp
