@@ -1,42 +1,36 @@
-read -p "Enter Server name(My Server): " servername
-servername=${servername:-My Server}
-echo ""
+prompt_var() {
+    local var_name="$1" default="$2" prompt="$3" mode="$4"
+    local input val
 
-read -p "Enter Server Port. Default 7777: " port
-port=${port:-7777}
-echo ""
+    if [[ "$mode" == "secret" ]]; then
+        read -rsp "$prompt: " input
+        echo ""
+    else
+        read -rp "$prompt: " input
+    fi
 
-printf "Enter max player count\nValue must be between 1 and 255. Default 8"
-read -p ": " playercount
-playercount=${playercount:-8}
-echo ""
+    val="${input:-$default}"
 
-printf "Enter Wolrd difficulty\n0(classic), 1(expert), 2(master), 3(journey). Default 0"
-read -p ": " difficulty
-difficulty=${difficulty:-0}
-echo ""
+    if [[ "$mode" == "bool" ]]; then
+        case "${val,,}" in
+            t|true) val="true" ;;
+            *)      val="false" ;;
+        esac
+    fi
 
-printf "Enter Wolrd size\n1(small), 2(medium), and 3(large). Default 3"
-read -p ": " size
-size=${size:-3}
-echo ""
+    export "$var_name"="$val"
+    echo ""
+}
 
-printf "Enter Custom message of the day\nDefault: 'Welcome to ${servername}'"
-read -p ": " motd
-motd=${motd:-"Welcome to $servername"}
-echo ""
+prompt_var SERVER_NAME     "My Server"                "Enter Server name (Default: 'My Server')"
+prompt_var PORT            "7777"                     "Enter Server Port (Default: 7777)"
+prompt_var COUNT           "8"                        $'Enter max player count (Default: 8 Max: 255)'
+prompt_var MOTD            "Welcome to $SERVER_NAME"  $'Enter Server MoTD\n(Default: Welcome to '"$SERVER_NAME"')'
+prompt_var WORLD_SIZE      "3"                        $'Enter Wolrd size\n1(small), 2(medium), and 3(large). Default 3'
+prompt_var DIFFICULTY      "0"                        $'Enter Wolrd difficulty\n0(classic), 1(expert), 2(master), 3(journey). Default 0'
+prompt_var SERVER_PASSWORD ""                         $'Enter server password (Default: none)' secret
 
-read -sp "Enter server password(none): " svr_password
-svr_password=${svr_password:-none}
-echo ""
-
-export SERVER_NAME=$servername
-export PORT=$port
-export COUNT=$playercount
-export DIFFICULTY=$difficulty
-export WORLD_SIZE=$size
-export MOTD=$motd
-export SERVER_PASSWORD=$(echo -n $svr_password | base64)
+export SERVER_PASSWORD=$(echo -n $SERVER_PASSWORD | base64)
 
 if [ -f "namespace.yml" ]; then
     echo "Applying namespace.yml..."

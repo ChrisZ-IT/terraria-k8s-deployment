@@ -28,7 +28,7 @@ data:
     port=${PORT}
 
     #Set the server password(Set in secret.yml)
-    #password=p@55w0rd
+    #password=
 
     #Set the message of the day
     motd="${MOTD}"
@@ -83,6 +83,8 @@ data:
     echo "Downloading: _DOLLAR_{zip_name}"
     mkdir _DOLLAR_{HOME}/temp
     curl -Lo _DOLLAR_{HOME}/temp/terraria_server.zip _DOLLAR_download_path/_DOLLAR_zip_name
+
+    rm -rf _DOLLAR_{HOME}/terraria-server/*
 
     # extracts linux server files
     unzip _DOLLAR_{HOME}/temp/terraria_server.zip -d _DOLLAR_{HOME}/temp && \

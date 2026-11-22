@@ -36,17 +36,18 @@ spec:
       initContainers:
       - name: init-downloader
         image: docker.io/chriszit/terraria-server-base:1.0.0
-        imagePullPolicy: IfNotPresent
-        command: ['sh', '-c', 'rm -rf /home/serviceuser/terraria-server/*; /config/download.sh']
+        imagePullPolicy: Always
+        command: ['sh', '-c', '/home/serviceuser/download.sh']
         volumeMounts:
         - name: terraria-gamefiles-volume
           mountPath: /home/serviceuser/terraria-server
         - name: terraria-game-configs
-          mountPath: /config/
+          mountPath: /home/serviceuser/download.sh
+          subPath: download.sh
       containers:
       - name: terraria-server
         image: debian:stable-slim
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         workingDir: /home/serviceuser/terraria-server
         resources:
           limits:
@@ -72,6 +73,7 @@ spec:
           - 'sh'
           - '-c'
           - |
+            chmod -R 755 /home/serviceuser/.local/share/Terraria; \
             /home/serviceuser/terraria-server/TerrariaServer.bin.x86_64 \
               -password _DOLLAR_JOIN_PASSWORD \
               -config /config/serverconfig.txt
