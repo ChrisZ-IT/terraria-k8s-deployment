@@ -11,13 +11,6 @@ prompt_var() {
 
     val="${input:-$default}"
 
-    if [[ "$mode" == "bool" ]]; then
-        case "${val,,}" in
-            t|true) val="true" ;;
-            *)      val="false" ;;
-        esac
-    fi
-
     export "$var_name"="$val"
     echo ""
 }
