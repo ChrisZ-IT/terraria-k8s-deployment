@@ -35,8 +35,8 @@ spec:
             defaultMode: 0755
       initContainers:
       - name: init-downloader
-        image: docker.io/chriszit/terraria-server-base:1.0.0
-        imagePullPolicy: Always
+        image: docker.io/chriszit/terraria-server-base:1.0.1
+        imagePullPolicy: IfNotPresent
         command: ['sh', '-c', '/home/serviceuser/download.sh']
         volumeMounts:
         - name: terraria-gamefiles-volume
