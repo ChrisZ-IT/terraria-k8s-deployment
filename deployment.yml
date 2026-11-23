@@ -46,9 +46,12 @@ spec:
           subPath: download.sh
       containers:
       - name: terraria-server
-        image: debian:stable-slim
-        imagePullPolicy: Always
+        image: docker.io/chriszit/terraria-server-base:1.0.1
+        imagePullPolicy: IfNotPresent
         workingDir: /home/serviceuser/terraria-server
+        securityContext:
+          runAsUser: 1026
+          runAsGroup: 100
         resources:
           limits:
             cpu: "3"
@@ -73,8 +76,7 @@ spec:
           - 'sh'
           - '-c'
           - |
-            chmod -R 755 /home/serviceuser/.local/share/Terraria; \
-            /home/serviceuser/terraria-server/TerrariaServer.bin.x86_64 \
+            ./TerrariaServer.bin.x86_64 \
               -password _DOLLAR_JOIN_PASSWORD \
               -config /config/serverconfig.txt
         volumeMounts:
